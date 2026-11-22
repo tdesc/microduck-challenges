@@ -1,6 +1,7 @@
 """MicroDuck Got a Talent trains in the Arena's physics, and reads the command a timeline carries."""
 
 import importlib
+import json
 import math
 from pathlib import Path
 
@@ -132,7 +133,10 @@ TIMELINE = Path(microduck_challenges.__file__).parent / "got_a_talent" / "timeli
 def test_the_reference_timeline_plays_on_the_arena():
     timeline = load_troupe(TIMELINE, load_event("got-a-talent")).ducks[0].timeline
     assert timeline.duration_s == 20.0
-    assert len(timeline.times) == 9
+    # The sponsor's custom performance (Quack Sonata, 13 keyframes) replaced
+    # Pollen's 9-keyframe reference; AGENTS.md's "adjust the test with them".
+    raw_keyframes = len(json.loads(TIMELINE.read_text())["keyframes"])
+    assert len(timeline.times) == raw_keyframes
 
 
 def test_the_reference_timeline_stays_inside_what_training_saw(cfg):
@@ -227,7 +231,8 @@ def test_check_plays_the_stage_and_fails_a_walker(capsys):
 
     assert check.main([str(ASSET_ROOT / "policies" / "BEST_alpha_walking.onnx")]) == 1
     out = capsys.readouterr().out.splitlines()
-    assert len(out) == 9 + 2  # a line per keyframe, the fall line, the verdict
+    keyframes = len(json.loads(TIMELINE.read_text())["keyframes"])
+    assert len(out) == keyframes + 2  # a line per keyframe, the fall line, the verdict
     assert out[-1].startswith("FAIL: largest head error ")
 
 
@@ -245,7 +250,7 @@ def test_check_reads_a_troupes_star_alone(tmp_path, capsys):
     ]}))
     assert check.main([str(ASSET_ROOT / "policies" / "BEST_alpha_walking.onnx"), "--timeline", str(troupe)]) == 1
     out = capsys.readouterr().out.splitlines()
-    assert len(out) == 9 + 2  # the star's keyframes, the fall line, the verdict
+    assert len(out) == len(reference["keyframes"]) + 2  # the star's keyframes, the fall line, the verdict
 
 
 def test_check_refuses_a_malformed_timeline(tmp_path, capsys):
