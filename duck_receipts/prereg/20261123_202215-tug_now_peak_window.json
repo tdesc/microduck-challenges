@@ -1,0 +1,20 @@
+{
+ "schema": "colony.duck.prereg.v1",
+ "frozen_at": "2026-11-23T20:22:15+00:00",
+ "name": "tug_now_peak_window",
+ "hypothesis": "256 envs покрывают пик-окно 250-500 дисциплины tug-of-war; мягкий ночной слот не искажает обучение",
+ "prediction": "лучший чекпоинт <= 90 с bout; opponent_in_pit >= 0.15 к итерации 400; win-награда ненулевая с итерации 50+",
+ "refutes": "лучший чекпоинт > 120 с, или opponent_in_pit < 0.05 на 400, или win остаётся 0 после 250",
+ "run": {
+  "task": "Mjlab-TugOfWar-MicroDuck",
+  "num_envs": 256,
+  "max_iterations": 400,
+  "seed": 2
+ },
+ "commitment_sha256": "e19c3e4b62b6f2ce288b636e06214172fff3e09a7e412c26abe747f9090bad02",
+ "verdict": {
+  "ruling": "NOT_EVALUABLE",
+  "evidence": "training in progress (iter ~100+/400)",
+  "commitment_intact": true
+ }
+}
