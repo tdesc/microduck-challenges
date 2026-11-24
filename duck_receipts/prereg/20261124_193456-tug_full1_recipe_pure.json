@@ -1,0 +1,15 @@
+{
+ "schema": "colony.duck.prereg.v1",
+ "frozen_at": "2026-11-24T19:34:56+00:00",
+ "name": "tug_full1_recipe_pure",
+ "hypothesis": "Форка A: полный оптимизатор задачи (LR 1e-3, KL 0.01 — env.py дефолты, как у Pollen t10) от того же банкнутого model_50 при рецептурном pull_reward 2.0 растит маржу быстрее gentle, ценой риска blow-up",
+ "prediction": "к iter 250: mean_cm > 20 при 5/5 победах (путь к линии t10 +139.6)",
+ "refutes": "blow-up до iter 250, ИЛИ 5/5 сидов но mean_cm < 5.3 к iter 250",
+ "run": {
+  "task": "Mjlab-TugOfWar-MicroDuck",
+  "num_envs": 256,
+  "max_iterations": 400,
+  "seed": 3
+ },
+ "commitment_sha256": "3486f0aabce3bd9615312a4312738c2e6d8f58cfab84e40251b707450022482a"
+}

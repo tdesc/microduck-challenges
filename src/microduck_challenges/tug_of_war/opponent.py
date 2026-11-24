@@ -11,6 +11,7 @@ its own BAM servos.
 The HF job installs no Arena: nothing here imports it; tests/test_tug_of_war.py pins each copy.
 """
 
+import os
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
@@ -22,6 +23,12 @@ from onnx import helper, numpy_helper
 from rsl_rl.models import MLPModel
 
 REFERENCE = Path(__file__).with_name("reference.onnx")  # the Arena's reference duck, t20-500, walking upright (Plan I)
+# The opponent ladder (gen N+1 trains against gen N's champion, judged against the Arena's
+# reference): `MICRODUCK_TUG_OPPONENT=/path/to/champion.onnx` swaps the TRAINING opponent.
+# The Arena's judging opponent is always its own frozen duck — this changes only who the
+# learner wrestles here. Unset, nothing moves (default stays byte-identical).
+if _ladder := os.environ.get("MICRODUCK_TUG_OPPONENT"):
+    REFERENCE = Path(_ladder)
 REFERENCE_SEEN = 1003 * 24 * 4096  # t20-500's normalizer count: rollouts (its walker start's 502, its own 501) × steps × envs
 WARM_START_STD = 0.5  # the warm-started learner's action noise: t20-500's own at 500, 0.36 to 0.70, mean 0.50, it walked upright under
 

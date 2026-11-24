@@ -1,0 +1,15 @@
+{
+ "schema": "colony.duck.prereg.v1",
+ "frozen_at": "2026-11-24T08:53:02+00:00",
+ "name": "hillws1",
+ "hypothesis": "walker.onnx warm-start переносит походку на hill-climb (8°) за 400 итер: та же походка + уклон",
+ "prediction": "лучший чекпоинт: финиш <= 25 с (1.5м на 8° при 0.15-1.0 м/с свипе), 5/5 финишей; error_vel_xy@250 < 0.15",
+ "refutes": "0/5 финишей на лучшем чекпоинте, или error_vel_xy@250 >= 0.3 (статуя/недоход)",
+ "run": {
+  "task": "Mjlab-HillClimb1m5-MicroDuck",
+  "num_envs": 512,
+  "max_iterations": 400,
+  "seed": 1
+ },
+ "commitment_sha256": "9b02810a65d19797f184fdb8a9a3c3e8d956c7b8493f7fec345676f32a8569f5"
+}

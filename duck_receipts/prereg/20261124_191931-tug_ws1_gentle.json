@@ -1,0 +1,15 @@
+{
+ "schema": "colony.duck.prereg.v1",
+ "frozen_at": "2026-11-24T19:19:31+00:00",
+ "name": "tug_ws1_gentle",
+ "hypothesis": "Gentle resume от banked пика gen1 (model_50, LR 2e-5 + KL 0.005) растит маржу ямы без contact blow-up",
+ "prediction": "к iter 200: 5/5 побед и mean_cm > 5.3 (доминирование над baseline 3.55), без mean-collapse ниже 0.25x бегущего пика",
+ "refutes": "любой чекпойнт к 200+ с 5/5 сидами но mean_cm < 3.55, ИЛИ blow-up (сумма rewards < -1000) до iter 200",
+ "run": {
+  "task": "Mjlab-TugOfWar-MicroDuck",
+  "num_envs": 256,
+  "max_iterations": 400,
+  "seed": 2
+ },
+ "commitment_sha256": "818d385cbebb6d9846214b87a7288e158cfe0435f42a6b49a4fd34e3a576551c"
+}

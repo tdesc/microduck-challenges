@@ -22,6 +22,10 @@ sys.path.insert(0, "/Users/valentin.kalinin/workspace/external/microduck-challen
 from tensorboard.backend.event_processing.event_accumulator import EventAccumulator
 
 WIN_TAG = "Episode_Reward/win"
+MEAN_TAG = "Mean reward"
+# DUCK_WATCH_METRIC=mean -> следить за Mean reward (mean-collapse rule: ловит
+# физический blow-up в -сотни тысяч, который win-трекинг пропустил в tug_gentle1)
+METRIC = os.environ.get("DUCK_WATCH_METRIC", "win")
 POLL_S = 60
 
 
@@ -30,9 +34,26 @@ def latest_win(run_dir: str):
     if not files:
         return None, 0
     ea = EventAccumulator(files[-1]); ea.Reload()
-    if WIN_TAG not in ea.Tags()["scalars"]:
+    if METRIC == "mean":
+        # «Mean reward» консоли тренера = сумма Episode_Reward/* компонентов;
+        # отдельного тега в tfevents нет — суммируем свежие значения компонентов.
+        reward_tags = [t for t in ea.Tags()["scalars"] if t.startswith("Episode_Reward/")]
+        if not reward_tags:
+            return None, 0
+        total = 0.0
+        steps = []
+        for tag in reward_tags:
+            ev = ea.Scalars(tag)
+            if ev:
+                total += ev[-1].value
+                steps.append(ev[-1].step)
+        if not steps:
+            return None, 0
+        return total, max(steps)
+    tag = WIN_TAG
+    if tag not in ea.Tags()["scalars"]:
         return None, 0
-    ev = ea.Scalars(WIN_TAG)
+    ev = ea.Scalars(tag)
     if not ev:
         return None, 0
     return ev[-1].value, ev[-1].step

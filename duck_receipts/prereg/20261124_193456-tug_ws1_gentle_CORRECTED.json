@@ -1,0 +1,15 @@
+{
+ "schema": "colony.duck.prereg.v1",
+ "frozen_at": "2026-11-24T19:34:56+00:00",
+ "name": "tug_ws1_gentle_CORRECTED",
+ "hypothesis": "Исправление честности: tug_ws1 (старт 20:30) унаследовал pull_reward 4.0 (t15 lever) из challenge.toml на момент запуска — коммит b7549fb 18:04. Фактическая конфигурация: gentle optimizer (LR 2e-5, KL 0.005) + pull_reward 4.0, resume от gen1/model_50. Файл challenge.toml откатан к 2.0 ПОСЛЕ старта (работающий процесс не перечитывает toml); тест рецепта зелёный. Предыдущий freeze tug_ws1_gentle объявляет конфигурацию неверно — на суде NOT_EVALUABLE.",
+ "prediction": "к iter 200: 5/5 побед и mean_cm > 5.3; побочный эффект рычага 4.0 — маржа растёт быстрее, чем у чистого gentle",
+ "refutes": "5/5 сидов но mean_cm < 3.55 к iter 200+, ИЛИ blow-up (сумма rewards < -1000) до iter 200",
+ "run": {
+  "task": "Mjlab-TugOfWar-MicroDuck",
+  "num_envs": 256,
+  "max_iterations": 400,
+  "seed": 2
+ },
+ "commitment_sha256": "46704e03770de8c3dacb3cc60967b72c34034a682ce45c9d25a5d30c7c2d7534"
+}
