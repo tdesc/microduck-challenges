@@ -1,0 +1,11 @@
+{
+  "tug-of-war": {
+    "event": "tug-of-war",
+    "run": "2026-11-24_20-30-39_tug_ws1",
+    "checkpoint": 75,
+    "score": 31.1,
+    "seeds_finished": 5,
+    "source": "workshop",
+    "registered_at": "2026-11-24T21:05:41+00:00"
+  }
+}

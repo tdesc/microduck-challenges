@@ -11,5 +11,10 @@
   "max_iterations": 0,
   "seed": 0
  },
- "commitment_sha256": "494136e080b1152e5240674acba887173eefb4c478b4ffda8a63866efc939393"
+ "commitment_sha256": "494136e080b1152e5240674acba887173eefb4c478b4ffda8a63866efc939393",
+ "verdict": {
+  "ruling": "PREDICTION_REFUTED",
+  "evidence": "P1 ОТВЕРГНУТ: runtime_recal (мотор model_50 + живой obsnorm tug_ws1/75) = -46.7 см против требуемых >=80% от gentle_step +31.1 см. P2 ПРОШЁЛ: frozen_birth -111.2 < born +22.0. Открытие: восприятие и мотор ко-адаптированы — замена obsnorm отдельно ломает политику в обе стороны (даже «более опытное» восприятие: -46.7 против родных +22.0). Runtime-only адаптация через своп восприятия в normalized-MLP не работает; адаптация должна двигать оба слоя совместно (что и сделал gentle-шаг: +31.1, 5/5, опубликован).",
+  "commitment_intact": true
+ }
 }
