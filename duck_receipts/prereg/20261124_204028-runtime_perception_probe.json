@@ -1,0 +1,15 @@
+{
+ "schema": "colony.duck.prereg.v1",
+ "frozen_at": "2026-11-24T20:40:28+00:00",
+ "name": "runtime_perception_probe",
+ "hypothesis": "Адаптация gentle-шага живёт в основном в калибровке восприятия (X-ray: sprint gentle 96.8% дрейфа с доминирующим obsnorm). Тест runtime-only тезиса: мотор заморожен на банкированном пике, восприятие переучивается на живом опыте без пересборки весов",
+ "prediction": "P1: режим 3 (мотор model_50 + живой obsnorm tug_ws1) даёт >=80% mean_cm режима 4 (полный gentle-шаг); P2: режим 2 (reference obsnorm) хуже режима 1; 5 сидов арены на каждом режиме",
+ "refutes": "если режим 3 не лучше режима 2 (живой obsnorm не даёт преимущества над рождением) — runtime-восприятие НЕ значимый канал адаптации в tug, тезис в нашем масштабе теряет",
+ "run": {
+  "task": "Mjlab-TugOfWar-MicroDuck",
+  "num_envs": 0,
+  "max_iterations": 0,
+  "seed": 0
+ },
+ "commitment_sha256": "494136e080b1152e5240674acba887173eefb4c478b4ffda8a63866efc939393"
+}
