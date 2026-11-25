@@ -1,0 +1,15 @@
+{
+ "schema": "colony.duck.prereg.v1",
+ "frozen_at": "2026-11-25T01:52:16+00:00",
+ "name": "tug_ladder1_vs_champion",
+ "hypothesis": "L4 лестница соперников: gen+1 тренируется ПРОТИВ нашего чемпиона m75 (MICRODUCK_TUG_OPPONENT), судим против reference. Против сильного соперника статичное 'потянул-держал' не прокатит - политика должна выучить добивание (pit-драг), как t10 у Pollen",
+ "prediction": "к iter 200: judge-профили против reference дают pit_won >= 2/5 и рейтинг > 31.1 (через чемпиона ген1)",
+ "refutes": "если к iter 200 рейтинг <= 31.1 или 0 pit_won - лестница не рождает добивания, канал соперников закрывается",
+ "run": {
+  "task": "Mjlab-TugOfWar-MicroDuck",
+  "num_envs": 256,
+  "max_iterations": 400,
+  "seed": 4
+ },
+ "commitment_sha256": "31f43a2b58e30139fbeadad217bfe0378c1459795281adb9d4841bfb0c360fc0"
+}

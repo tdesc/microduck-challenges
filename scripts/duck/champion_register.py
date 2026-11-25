@@ -31,11 +31,20 @@ def workshop_verdicts(run_dir: Path):
     return out
 
 
-def best_from_verdicts(verdicts):
+# Disciplines whose score is a MARGIN in cm: higher is better. The register's
+# original comparison was seconds-based (heist/sprint, lower is better) and
+# silently kept an inferior tug champion on 2026-11-25 morning.
+HIGHER_IS_BETTER = {"tug-of-war", "hill-climb-1m5", "roller-sprint-2m"}
+
+
+def best_from_verdicts(verdicts, event: str = ""):
     finished = {k: v for k, v in verdicts.items() if v.get("seeds_finished", 0) >= 5 and isinstance(v.get("score"), (int, float))}
     if not finished:
         return None
-    n = min(finished, key=lambda k: finished[k]["score"])
+    if event in HIGHER_IS_BETTER:
+        n = max(finished, key=lambda k: finished[k]["score"])
+    else:
+        n = min(finished, key=lambda k: finished[k]["score"])
     return {"checkpoint": n, "score": finished[n]["score"], "seeds_finished": finished[n].get("seeds_finished", 5), "source": "workshop"}
 
 
@@ -58,7 +67,7 @@ def main():
 
     for event, run in pairs:
         verdicts = workshop_verdicts(Path(run))
-        best = best_from_verdicts(verdicts)
+        best = best_from_verdicts(verdicts, event)
         if not best:
             print(f"{event}: no 5/5 verdicts in {run.name}")
             continue
@@ -69,7 +78,10 @@ def main():
             "registered_at": __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(timespec="seconds"),
         }
         old = register.get(event)
-        improved = old is None or (best["score"] or 99) < (old.get("score") or 99)
+        if event in HIGHER_IS_BETTER:
+            improved = old is None or (best["score"] or -999) > (old.get("score") or -999)
+        else:
+            improved = old is None or (best["score"] or 99) < (old.get("score") or 99)
         mark = "NEW CHAMPION" if improved else "(current champion better)"
         print(f"{event}: best {best['score']}s @ model_{best['checkpoint']} ({run.name}) — {mark}")
         if improved:

@@ -1,11 +1,13 @@
 {
   "tug-of-war": {
     "event": "tug-of-war",
-    "run": "2026-11-24_20-30-39_tug_ws1",
-    "checkpoint": 75,
-    "score": 31.1,
+    "run": "2026-11-25_00-45-23_tug_full1",
+    "checkpoint": 125,
+    "score": 145.4,
     "seeds_finished": 5,
     "source": "workshop",
-    "registered_at": "2026-11-24T21:05:41+00:00"
+    "registered_at": "2026-11-25T08:20:00+03:00",
+    "note": "higher-is-better discipline: pit_won 5/5, arena official 118.9",
+    "arena": "01M88RF6PFN91D1WWM41SK"
   }
 }
