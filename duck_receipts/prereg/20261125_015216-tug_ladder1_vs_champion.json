@@ -11,5 +11,10 @@
   "max_iterations": 400,
   "seed": 4
  },
- "commitment_sha256": "31f43a2b58e30139fbeadad217bfe0378c1459795281adb9d4841bfb0c360fc0"
+ "commitment_sha256": "31f43a2b58e30139fbeadad217bfe0378c1459795281adb9d4841bfb0c360fc0",
+ "verdict": {
+  "ruling": "PREDICTION_REFUTED",
+  "evidence": "model_200: 0 pit_won, rating -73.0 (нужно было >=2 pit_won и >31.1). Корневая причина: obsnorm._var взорвался до 6.7e9 на первых итерациях (соперник-чемпион тащит в яму - шоковые наблюдения) - learner ослеп, все чекпойнты байт-идентичны на арене. Урок: соперническая курикулум требует условного клампа нормализатора или слабого соперника сначала. Гипотеза совета (условная стабилизация) получила receipts.",
+  "commitment_intact": true
+ }
 }
