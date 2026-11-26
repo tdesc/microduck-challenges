@@ -1,0 +1,20 @@
+{
+ "schema": "colony.duck.prereg.v1",
+ "frozen_at": "2026-11-25T13:20:44+00:00",
+ "name": "heist_probe10x",
+ "hypothesis": "10x budget cut (512 envs x 100 iters vs 512x1000, same task/seed) still lands a working sock-heist policy, just slower",
+ "prediction": "P1: at least one judged checkpoint finishes 5/5 seeds (falls-free carry of the freeze mechanic). P2: final checkpoint score within 24.8-41.4 s (heist1@100 baseline 33.085 s +/- 25%, same seed 1). P3: wall time 38 min +/- (under 90 min, over 15 min) i.e. ~1/10 of heist1 6h24m",
+ "refutes": "P1 refuted if no judged checkpoint reaches 5/5. P2 refuted if final score outside 24.8-41.4 s. P3 refuted if wall time outside 15-90 min",
+ "run": {
+  "task": "Mjlab-SockHeist6m-MicroDuck",
+  "num_envs": 512,
+  "max_iterations": 100,
+  "seed": 1
+ },
+ "commitment_sha256": "3cbbf9adce2b5f616f9120e3986e9f0202b6fb8e510ce05053ab701d452002cb",
+ "verdict": {
+  "ruling": "PREDICTION_FULFILLED",
+  "evidence": "P1 FULFILLED: model_99 local arena judge 5/5 finished (seeds: 33.47/33.33/32.33/33.77 + seed1, score 33.408s, event sock-heist-6m). P2 FULFILLED: 33.408s vs heist1@100 baseline 33.085s (+0.97%), band was 24.8-41.4. P3 FULFILLED: wall 48m11s (train log Time elapsed), band 15-90 min; contended slot load~20 flagged, iteration time 22.63s ~= quiet baseline 23.1s so contention did not distort iterations. Sources: logs/rsl_rl/sock_heist_6m/2026-11-25_16-38-45_heist_probe10x/ (checkpoints model_0/25/50/75/99, final onnx), arena score stdout",
+  "commitment_intact": true
+ }
+}

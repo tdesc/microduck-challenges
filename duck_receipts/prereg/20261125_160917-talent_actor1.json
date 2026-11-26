@@ -1,0 +1,20 @@
+{
+ "schema": "colony.duck.prereg.v1",
+ "frozen_at": "2026-11-25T16:09:17+00:00",
+ "name": "talent_actor1",
+ "hypothesis": "Sit/stand/head-follower — крошечное пространство поведения: 256 envs на CPU растят актёра, выполняющего команды таланта (присед по флагу, повороты головы), без GPU-рецепта 4096x3000",
+ "prediction": "к iter 400: тест-хореография (25% времени - команда сидеть) даёт seated 50-120% от commanded и 0 падений; голова отвечает на yaw-качели амплитудой > 0.2 rad",
+ "refutes": "seated < 30% от commanded (не слушает флаг) или падения на сменах поз — актёр не состоялся, нужен GPU-масштаб",
+ "run": {
+  "task": "Mjlab-GotATalent-MicroDuck",
+  "num_envs": 256,
+  "max_iterations": 600,
+  "seed": 1
+ },
+ "commitment_sha256": "8e47bdc671cd65e07c5a644e0c323362916dbc1f3b42ba7b3fdc26db9ed4d762",
+ "verdict": {
+  "ruling": "PREDICTION_REFUTED",
+  "evidence": "model_599: СЦЕНА1 seated [0.0 0.0 0.0] из commanded ~10с (нужно >=30%). Reward вырос 1.3 -> 80 (head/stillness компоненты), но sit-флаг не выучен за 600 итераций на 256 envs. Паттерн: новая моторика требует GPU-масштаба",
+  "commitment_intact": true
+ }
+}

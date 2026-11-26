@@ -1,0 +1,20 @@
+{
+ "schema": "colony.duck.prereg.v1",
+ "frozen_at": "2026-11-25T18:19:37+00:00",
+ "name": "roller_air1",
+ "hypothesis": "Ходячий гейт transferred на роликовый риг (warm-start reference)",
+ "prediction": "к iter 400: 5/5 финишей и время < 25с",
+ "refutes": "0/5 финишей или время > 33.6s — перенос не состоялся",
+ "run": {
+  "task": "Mjlab-RollerSprint2m-MicroDuck",
+  "num_envs": 256,
+  "max_iterations": 400,
+  "seed": 1
+ },
+ "commitment_sha256": "bf909f7d3d62472db4bdd90be33b01bb86285bae01148beb0e0b08210bc56e83",
+ "verdict": {
+  "ruling": "PREDICTION_REFUTED",
+  "evidence": "model_375/model_399: 0/5 финишей, таймауты 40с. Reward -20.6 -> -0.05, но переноса походки на качение за 400 итераций не произошло. gen-вывод: роликам нужен свой warm-start или 3-4x длина прогона (GPU)",
+  "commitment_intact": true
+ }
+}
