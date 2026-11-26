@@ -44,6 +44,13 @@ def collect_air():
     lines = [l for l in s.splitlines() if l.strip()]
     return {"air_raw": lines}
 
+WORK_ORDERS = [
+    {"id": "WO-1", "arc": "talent_actor2 (анти-ленивая школа)", "machine": "air", "gate": "СЦЕНА1 seated >= 50%", "status": "в работе, экзамен вечером"},
+    {"id": "WO-2", "arc": "talent_load1 (DR-пассажир 0.15-0.35 кг)", "machine": "pro", "gate": "СЦЕНА1 seated >= 50% к 400", "status": "школа запущена, prereg 12e68baf"},
+    {"id": "WO-3", "arc": "пьедестал-пьедестал (залез+подъём+прыжок)", "machine": "—", "gate": "требует WO-1+WO-2+mount-курикулум", "status": "BLOCKED на навыках, физика пройдена (опора/подъём доказаны)"},
+    {"id": "WO-4", "arc": "хор стоя (Ария и поклон)", "machine": "pro", "gate": "все сцены PASS у quack-sonata", "status": "ГОТОВ К ПОСТАНОВКЕ сегодня"},
+]
+
 def events(state):
     ts = datetime.now(timezone.utc).isoformat(timespec="seconds")
     ev = []
@@ -56,11 +63,17 @@ def events(state):
                "kind": "training", "run": "talent_actor2+roller_air1", "note": json.dumps(state.get("air_raw", []), ensure_ascii=False)[:300]})
     ev.append({"schema": "colony.glass.duck_event.v1", "ts": ts, "machine": "pro",
                "kind": "receipt_chain", "note": state.get("chain_head", "")})
+    for wo in WORK_ORDERS:
+        ev.append({"schema": "colony.glass.duck_event.v1", "ts": ts, "machine": wo["machine"],
+                   "kind": "work_order", "run": wo["id"], "note": f"{wo['arc']} | гейт: {wo['gate']} | {wo['status']}"})
     return ev
 
 def mission(state, evs):
     air = state.get("air_raw", [])
     rows = "".join(f"<tr><td>{i+1}</td><td>{l}</td></tr>" for i, l in enumerate(air))
+    wo_rows = "".join(
+        f"<tr><td>{w['id']}</td><td>{w['machine']}</td><td>{w['arc']}</td><td>{w['gate']}</td><td>{w['status']}</td></tr>"
+        for w in WORK_ORDERS)
     ev_rows = "".join(f"<tr><td>{e['machine']}</td><td>{e['kind']}</td><td>{e.get('run','')}</td><td>{e['note'][:160]}</td></tr>" for e in evs)
     return f"""<!doctype html><html><head><meta charset="utf-8"><title>Duck Mission Control</title>
 <style>body{{background:#101218;color:#e8ebf0;font-family:Menlo,monospace;margin:24px}}
@@ -75,6 +88,9 @@ td{{border:1px solid #2c303c;padding:6px 10px}} .ok{{color:#7ee787}} .warn{{colo
 <pre style="white-space:pre-wrap">{state.get('scene_last','')}</pre>
 <h2>СТЕКЛЯННЫЙ ПОТОК (последние события)</h2>
 <table><tr><th>машина</th><th>тип</th><th>забег</th><th>заметка</th></tr>{ev_rows}</table>
+<h2>🏭 НАД ЧЕМ РАБОТАЕМ (ордера завода)</h2>
+<table><tr><th>ордер</th><th>машина</th><th>дуга</th><th>гейт</th><th>статус</th></tr>
+{wo_rows}</table>
 <h2>ЦЕПЬ КВИТАНЦИЙ</h2><p class="ok">{state.get('chain_head','')}</p>
 </body></html>"""
 

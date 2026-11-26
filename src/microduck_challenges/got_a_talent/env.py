@@ -57,6 +57,7 @@ Joint layout (14 actuated joints):
 """
 
 import math
+import os
 from copy import deepcopy
 
 # Symmetry
@@ -622,6 +623,23 @@ def make_env_cfg(
     )
     cfg.events["foot_friction"].params["asset_cfg"].geom_names = foot_frictions_geom_names
     cfg.events["foot_friction"].params["ranges"] = (0.7, 1.3)  # match velocity
+
+    # ── Пассажир на спине (under-load school, talent_load1) ─────────────────
+    # MICRODUCK_PAYLOAD=1: точечная масса на trunk_base (COM), у каждого envа
+    # своя — политика учится сид/стой ВЕЗДЕ С НАГРУЗКОЙ (DR-перенос сильнее
+    # курикулума). Ссылаемся на mjlab.envs.mdp.dr.body_mass напрямую.
+    if os.environ.get("MICRODUCK_PAYLOAD"):
+        from mjlab.envs.mdp import dr as _mjlab_dr
+        cfg.events["passenger_mass"] = EventTermCfg(
+            func=_mjlab_dr.body_mass,
+            mode="startup",
+            params={
+                "asset_cfg": SceneEntityCfg("robot", body_names=("trunk_base",)),
+                "ranges": (0.15, 0.35),
+                "distribution": "uniform",
+                "operation": "add",
+            },
+        )
 
     # Base reset: standing, just above the measured equilibrium (STAND_Z=0.115).
     cfg.events["reset_base"].params["pose_range"]["z"] = (0.11, 0.12)

@@ -1,0 +1,15 @@
+{
+ "schema": "colony.duck.prereg.v1",
+ "frozen_at": "2026-11-26T20:44:54+00:00",
+ "name": "talent_load1",
+ "hypothesis": "DR-пассажир (0.15-0.35 кг на trunk COM, свой у каждого envа) учит sit/stand стойкости к нагрузке: политика, тренированная ВЕЗДЕ С пассажиром, сядет/встанет по флагу и БЕЗ него сильнее (DR-перенос). Анти-ленивые патчи (SIT_PROB 0.8, stillness 0.5) в силе",
+ "prediction": "к iter 400: СЦЕНА1 (без пассажира) seated >= 50% commanded на каждой утке (actor1 давал 0%)",
+ "refutes": "СЦЕНА1 seated < 30% к iter 400 — даже DR-школа не растит флаг, путь только GPU 4096x3000",
+ "run": {
+  "task": "Mjlab-GotATalent-MicroDuck",
+  "num_envs": 256,
+  "max_iterations": 600,
+  "seed": 1
+ },
+ "commitment_sha256": "12e68baf7cf03770f1f3841cab599c05d7679a393bfc80d3a59819be1ddacd1d"
+}
