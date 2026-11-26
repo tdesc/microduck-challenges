@@ -100,7 +100,7 @@ EPISODE_LENGTH_S = 12.0
 POSTURE_DWELL_S  = (3.5, 6.5)
 # Probability a resample commands SIT (vs STAND). 0.5 → all four combinations
 # of (reset state × command) get equal coverage, including both holds.
-SIT_PROB         = 0.5
+SIT_PROB         = 0.8  # talent_actor2: сидению больше сэмплов (анти-ленивый оптимум)
 
 # ── SIT keyframe (joint_pos index → angle in rad). Single fixed target. ─────
 # STABILITY-VERIFIED 2026-07-27 (sit env, scratchpad sweep_sit_pose2.py):

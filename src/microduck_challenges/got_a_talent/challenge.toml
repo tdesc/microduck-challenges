@@ -23,7 +23,7 @@ max   = 2.0
 
 [params.stillness_reward]
 label = "Hold still between moves"
-value = 2.0
+value = 0.5  # talent_actor2: срезана ленивая рента за стояние
 min   = 0.0
 max   = 4.0
 
