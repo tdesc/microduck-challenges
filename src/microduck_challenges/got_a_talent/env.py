@@ -188,6 +188,19 @@ from mjlab_microduck.tasks.microduck_velocity_env_cfg import (
 from mjlab_microduck.tasks.symmetry import PpoWithSymmetryCfg, SYMMETRY_CFG
 
 
+def _sit_stand_command_obs(env, command_name="twist"):
+    """Twist command obs with the PAID setpoint in slot 0: SitStandCommand.alpha.
+
+    The posture rewards track the slewed STAND↔SIT blend alpha, not the raw
+    binary flag (the flag only encodes the ramp endpoint). Exposing alpha makes
+    the tracked target observable; at rest alpha == the binary flag exactly,
+    so the deployment slot semantics are unchanged.
+    """
+    out = env.command_manager.get_command(command_name).clone()
+    out[:, 0] = env.command_manager.get_term(command_name).alpha
+    return out
+
+
 def make_env_cfg(
     play: bool = False,
 ) -> ManagerBasedRlEnvCfg:
@@ -574,6 +587,13 @@ def make_env_cfg(
         cfg.observations[group].terms["body_command"] = ObservationTermCfg(
             func=microduck_mdp.zero_command_padding, params={"dim": 6},
         )
+        # Twist slot carries the SLEWED setpoint alpha the posture rewards pay
+        # on (replaces the template's raw-binary generated_commands): at rest
+        # alpha == the binary flag, mid-ramp the moving target is visible.
+        # Slot layout/order unchanged (overwriting the key keeps its position).
+        cfg.observations[group].terms["command"] = ObservationTermCfg(
+            func=_sit_stand_command_obs, params={"command_name": "twist"},
+        )
 
     # ── Command: sit/stand posture flag in the twist slot ────────────────────
     # cmd = [sit_flag, 0, 0]; dwell-time resampling flips the posture mid-
@@ -581,7 +601,8 @@ def make_env_cfg(
     # runtime drives this by writing 0/1 into the vx slot of the command
     # buffer. Internally the term slews a target blend over POSTURE_RAMP_S
     # that the posture rewards track (see the constant's comment); the OBS
-    # stays the raw binary flag.
+    # twist[0] carries that slewed blend alpha (== the raw binary flag at
+    # rest) — see _sit_stand_command_obs above.
     command = cfg.commands["twist"]
     command.rel_standing_envs = 0.0
     command.rel_heading_envs  = 0.0
